@@ -8,16 +8,17 @@ class Usuario {
     }
 
     public function create($nome, $data_nasc, $email, $endereco, $senha) {
-        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        $hash = password_hash($senha, PASSWORD_DEFAULT);
         $query = "INSERT INTO usuario (nome, data_nasc, email, endereco, senha) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->connect->prepare($query);
 
         
-        $stmt->bind_param("sssss", $nome, $data_nasc, $email, $endereco, $senhaHash);
+        $stmt->bind_param("sssss", $nome, $data_nasc, $email, $endereco, $hash);
 
-        
-        $stmt->execute();
-
-
+        if ($stmt->execute()) {
+            return true; 
+        } else {
+            return false;
+        }
     }
 }

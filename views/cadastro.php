@@ -15,11 +15,14 @@ if (isset($_POST['nome'])) {
     $db = new Database();
     $connection = $db->connect();
 
-    $controllerUser  = new Usuario($connection);
+    $controllerUser   = new Usuario($connection);
 
-    $controllerUser->create($_POST['nome'], $_POST['data_nasc'], $_POST['email'], $_POST['endereco'], $_POST['senha']);
-        
-    
+    if ($controllerUser ->create($_POST['nome'], $_POST['data_nasc'], $_POST['email'], $_POST['endereco'], $_POST['senha'])) {
+        header("Location: login.php");
+        exit();
+    } else {
+        echo "<p>Erro ao cadastrar usuário. Tente novamente.</p>";
+    }
 }
 ?>
 
